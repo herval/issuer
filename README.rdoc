@@ -1,6 +1,12 @@
 = issuer
 
-Description goes here.
+Issuer plugs in to any Rails project and generates Github Issues automatically, whenever an exception explodes on the user's face.
+
+Notice it won't post the same issue twice (if it finds an open issue whose description match)
+ 
+== Installation
+
+See INSTALL for details
 
 == Contributing to issuer
  
@@ -14,6 +20,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2012 Herval Freire. See LICENSE.txt for
+Copyleft (c) 2012 Herval Freire. See LICENSE.txt for
 further details.
 

@@ -1,0 +1,18 @@
+=== Now what?
+
+First things first:
+The GitHub API requires an OAuth token in order to work. After installing the Gem, you will be given an URL that should be accessed in order to authorize the Issuer gem to post issues on your behalf. In case you're wondering, the entire server-side code that does this trick can be seen here: <issuer server side app>
+
+
+Create an initializer and configure the Github API key for the project.
+
+e.g.:
+
+# on a file called config/initializers/issuer.rb
+
+  Issuer.api_token = 'your_api_token_here' # copy+paste the api key generated on the first step above
+  Issuer.user = 'your_username'
+  Issuer.repo = 'the_repository'
+  Issuer.fallback_email = 'email address that will be used in case Issuer finds any problem (e.g. your authorization token is revoked)'
+
+Your API token is private and should not be shared - ideally, you should keep it as an ENV variable, instead of hardcoded on the initializer

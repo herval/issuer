@@ -17,11 +17,11 @@ Jeweler::Tasks.new do |gem|
   gem.name = "issuer"
   gem.homepage = "http://github.com/herval/issuer"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Automaticly generate Github Issues whenever your app raises an exception}
+  gem.description = %Q{Issuer plugs in to your Rails app, catching exceptions and posting them to your Github project as issues.}
   gem.email = "hervalfreire@gmail.com"
   gem.authors = ["Herval Freire"]
-  # dependencies defined in Gemfile
+  gem.version = File.read('VERSION')
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -32,19 +32,11 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
-end
-
 task :default => :test
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = File.read('VERSION')
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "issuer #{version}"
