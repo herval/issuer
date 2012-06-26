@@ -5,19 +5,27 @@ module Issuer
     
     def self.notify(exception)
       begin
-        params = {:title => exception_title(exception), :body => exception_body(exception)}
+        params = {:title => exception_title(exception), :body => exception_body(exception), :labels => ["issuer"]}
 
-        binding.pry
         @@api ||= GitHubV3API.new(Issuer.api_token)
-        puts api
         # TODO detect if exists already?
-        @@api.issues.create(Issuer.user, Issuer.repo, params)
-        # TODO log
+        # TODO replace this by a search: http://developer.github.com/v3/search/#search-issues
+        existing = @@api.issues.list(:user => Issuer.user, :repo => Issuer.repo, :labels => "issuer")
+        issue = existing.select { |s| s.title == params[:title] }
+
+        if issue
+          if issue.state != 'open'
+            # TODO reopen and leave a comment
+          else
+            # TODO leave a comment, maybe?
+          end
+        else
+          issue = @@api.issues.create(Issuer.user, Issuer.repo, params)
+          puts "New issue registered: #{issue.id} - #{issue.title}"
+        end
       rescue => e
-        puts e
+        puts "[Issuer] There was an error posting exception to GitHub: #{e.message} - the full backtrace was sent to the fallback email"
         # TODO send email
-        # TODO log?
-        # in the meantime, just let it go...
       end
     end
     
