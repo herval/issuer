@@ -8,7 +8,6 @@ module Issuer
         params = {:title => exception_title(exception), :body => exception_body(exception), :labels => ["issuer"]}
 
         @@api ||= GitHubV3API.new(Issuer.api_token)
-        # TODO detect if exists already?
         # TODO replace this by a search: http://developer.github.com/v3/search/#search-issues
         existing = @@api.issues.list(:user => Issuer.user, :repo => Issuer.repo, :labels => "issuer")
         issue = existing.select { |s| s.title == params[:title] }
@@ -36,7 +35,13 @@ module Issuer
     end
     
     def self.exception_body(exception)
-      exception.backtrace ? exception.backtrace.join("\n") : "No backtrace provided"
+      info = [
+        ["Class", exception.class.to_s],
+        ["Time", Time::now],
+        ["Message", exception.message],
+        ["Backtrace", exception.backtrace.join("\n")],
+      ]
+      info.collect{ |k, v| "#{k}: #{v}" }.join("\n")
     end
   end
 end
